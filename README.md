@@ -29,13 +29,27 @@ and [tic80-tools](../tic80-tools).
    in sync with `EXPORT_PRESET` in the Makefile.
 3. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` and add the
    `droparea_ssh_password` / `update_secret_key` secrets in Woodpecker.
-   Match the `barichello/godot-ci` image tag to the Godot version the
-   project is made with (e.g. `4.6`) — the image ships the matching
-   export templates.
+   Match the `godot-builder` image tag to the Godot version the
+   project is made with (e.g. `4.6`) — the underlying
+   `barichello/godot-ci` image ships the matching export templates.
 4. Copy `example-tasks.json` to `.vscode/tasks.json`.
 
 The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` to the droparea,
 then triggers
 `/update?platform=godot&name=$(PROJECT)&version=$(VERSION)`.
+
+## Builder image
+
+`builder.Dockerfile` wraps `barichello/godot-ci` (editor + web export
+templates) with make/zip preinstalled as
+`git.teletype.hu/internal/godot-builder`, so the build step no longer
+runs `apt-get` on every run. The tag tracks the Godot version:
+
+```sh
+docker build --platform linux/amd64 -f builder.Dockerfile \
+  --build-arg GODOT_VERSION=4.6 \
+  -t git.teletype.hu/internal/godot-builder:4.6 .
+docker push git.teletype.hu/internal/godot-builder:4.6
+```
 
 Detailed documentation lives on the wiki: `/development/godot`.

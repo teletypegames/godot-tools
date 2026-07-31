@@ -6,9 +6,8 @@ steps:
       - make ci-version
 
   - name: build
-    image: barichello/godot-ci:4.6
+    image: git.teletype.hu/internal/godot-builder:4.6
     commands:
-      - apt-get update && apt-get install -y --no-install-recommends make zip
       - make ci-export
 
   - name: artifact
