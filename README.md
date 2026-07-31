@@ -42,14 +42,14 @@ then triggers
 
 `builder.Dockerfile` wraps `barichello/godot-ci` (editor + web export
 templates) with make/zip preinstalled as
-`git.teletype.hu/internal/godot-builder`, so the build step no longer
+`git.teletypegames.org/internal/godot-builder`, so the build step no longer
 runs `apt-get` on every run. The tag tracks the Godot version:
 
 ```sh
 docker build --platform linux/amd64 -f builder.Dockerfile \
   --build-arg GODOT_VERSION=4.6 \
-  -t git.teletype.hu/internal/godot-builder:4.6 .
-docker push git.teletype.hu/internal/godot-builder:4.6
+  -t git.teletypegames.org/internal/godot-builder:4.6 .
+docker push git.teletypegames.org/internal/godot-builder:4.6
 ```
 
 Detailed documentation lives on the wiki: `/development/godot`.

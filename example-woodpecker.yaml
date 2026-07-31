@@ -6,7 +6,7 @@ steps:
       - make ci-version
 
   - name: build
-    image: git.teletype.hu/internal/godot-builder:4.6
+    image: git.teletypegames.org/internal/godot-builder:4.6
     commands:
       - make ci-export
 
