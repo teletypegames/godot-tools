@@ -9,6 +9,7 @@ steps:
     image: git.teletypegames.org/internal/godot-builder:4.6
     commands:
       - make ci-export
+      - make ci-binaries
 
   - name: artifact
     image: alpine
