@@ -9,7 +9,7 @@ and [tic80-tools](../tic80-tools).
   binary targets (`binaries`, `binary-win-x86`, `binary-win-x64`,
   `binary-linux-x64`, `binary-mac-universal`) plus the Woodpecker
   pipeline targets (`ci-version`, `ci-export`, `ci-binaries`,
-  `ci-upload`, `ci-update`).
+  `ci-upload`, `ci-publish`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
   (headless web export + desktop binaries in the `barichello/godot-ci`
   image) → upload (HTTP POST to `/build/upload`) → update (calls the

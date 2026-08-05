@@ -135,8 +135,8 @@ ci-upload:
 			"$(UPDATE_SERVER)/build/upload?name=$(PROJECT)&version=$$VERSION" || exit 1; \
 	done
 
-ci-update:
+ci-publish:
 	@VERSION=$$(cat $(VERSION_FILE)); \
 	curl -fsS -X POST -H "X-Update-Secret: $(UPDATE_SECRET)" "$(UPDATE_SERVER)/build/publish?name=$(PROJECT)&platform=godot&version=$$VERSION"
 
-.PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac ci-version ci-export ci-binaries ci-upload ci-update
+.PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac ci-version ci-export ci-binaries ci-upload ci-publish
