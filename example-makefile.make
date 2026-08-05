@@ -129,12 +129,14 @@ ci-upload:
 	META_DST="$(PROJECT)-$$VERSION.metadata.json"; \
 	BINS=$$(ls $(PROJECT)-$$VERSION-*.zip 2>/dev/null || true); \
 	cp $$META_SRC $$META_DST; \
-	sshpass -p "$(DROPAREA_SSH_PASSWORD)" scp -o StrictHostKeyChecking=no -P $(DROPAREA_PORT) \
-		$$FILE $$META_DST $$BINS \
-		$(DROPAREA_USER)@$(DROPAREA_HOST):$(DROPAREA_TARGET_PATH)/
+	for f in $$FILE $$META_DST $$BINS; do \
+		curl -fsS -H "X-Update-Secret: $(UPDATE_SECRET)" \
+			-F "file=@$$f" \
+			"$(UPDATE_SERVER)/build/upload?name=$(PROJECT)&version=$$VERSION" || exit 1; \
+	done
 
 ci-update:
 	@VERSION=$$(cat $(VERSION_FILE)); \
-	curl "$(UPDATE_SERVER)/update?secret=$(UPDATE_SECRET)&name=$(PROJECT)&platform=godot&version=$$VERSION"
+	curl -fsS -X POST -H "X-Update-Secret: $(UPDATE_SECRET)" "$(UPDATE_SERVER)/build/publish?name=$(PROJECT)&platform=godot&version=$$VERSION"
 
 .PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac ci-version ci-export ci-binaries ci-upload ci-update

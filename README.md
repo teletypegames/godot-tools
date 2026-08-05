@@ -12,8 +12,8 @@ and [tic80-tools](../tic80-tools).
   `ci-upload`, `ci-update`).
 - `example-woodpecker.yaml` — Woodpecker pipeline: version → build
   (headless web export + desktop binaries in the `barichello/godot-ci`
-  image) → upload (scp to the droparea) → update (calls the
-  teletypegames `/update` endpoint with `platform=godot`).
+  image) → upload (HTTP POST to `/build/upload`) → update (calls the
+  teletypegames `/build/publish` endpoint with `platform=godot`).
 - `example-export_presets.cfg` — `export_presets.cfg` with the **Web**
   preset the Makefile exports plus the desktop presets (**Windows
   x86**, **Windows x64**, **Linux x64**, **Mac universal**). Web
@@ -41,7 +41,7 @@ and [tic80-tools](../tic80-tools).
    textures/vram_compression/import_etc2_astc=true
    ```
 3. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` and add the
-   `droparea_ssh_password` / `update_secret_key` secrets in Woodpecker.
+   `update_secret_key` secret in Woodpecker.
    Match the `godot-builder` image tag to the Godot version the
    project is made with (e.g. `4.6`) — the underlying
    `barichello/godot-ci` image ships the matching export templates.
@@ -49,8 +49,8 @@ and [tic80-tools](../tic80-tools).
 
 The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` and the desktop
 binary zips (`$(PROJECT)-$(VERSION)-<target>.zip`, targets: `win-x86`,
-`win-x64`, `linux-x64`, `mac-universal`) to the droparea, then triggers
-`/update?platform=godot&name=$(PROJECT)&version=$(VERSION)`, which
+`win-x64`, `linux-x64`, `mac-universal`) via `/build/upload`, then triggers
+`/build/publish?platform=godot&name=$(PROJECT)&version=$(VERSION)`, which
 attaches them to the release as ReleaseAssets. Godot cross-exports all
 desktop platforms from the linux CI image with the official export
 templates; mac is a single universal (intel + arm) build with Godot's
