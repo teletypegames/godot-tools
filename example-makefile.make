@@ -11,8 +11,6 @@ DIST_DIR   = dist
 WEB_DIR    = $(DIST_DIR)/web
 OUTPUT_ZIP = $(PROJECT)-$(VERSION).html.zip
 
-VERSION_FILE = .version
-
 all: build
 
 build:
@@ -102,41 +100,4 @@ watch:
 clean:
 	rm -rf $(DIST_DIR) .godot
 
-ci-version:
-	@if [ -f metadata.json ]; then \
-		VERSION=$$(jq -r '.version' metadata.json); \
-	else \
-		VERSION=$$(git rev-parse --short HEAD); \
-	fi; \
-	BRANCH=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "$$BRANCH" != "main" ] && [ "$$BRANCH" != "master" ]; then \
-		VERSION="dev-$$VERSION-$$BRANCH"; \
-	fi; \
-	echo $$VERSION > $(VERSION_FILE)
-
-ci-export:
-	@VERSION=$$(cat $(VERSION_FILE)); \
-	$(MAKE) export VERSION=$$VERSION
-
-ci-binaries:
-	@VERSION=$$(cat $(VERSION_FILE)); \
-	$(MAKE) binaries VERSION=$$VERSION
-
-ci-upload:
-	@VERSION=$$(cat $(VERSION_FILE)); \
-	FILE="$(PROJECT)-$$VERSION.html.zip"; \
-	META_SRC="metadata.json"; \
-	META_DST="$(PROJECT)-$$VERSION.metadata.json"; \
-	BINS=$$(ls $(PROJECT)-$$VERSION-*.zip 2>/dev/null || true); \
-	cp $$META_SRC $$META_DST; \
-	for f in $$FILE $$META_DST $$BINS; do \
-		curl -fsS -H "X-Update-Secret: $(UPDATE_SECRET)" \
-			-F "file=@$$f" \
-			"$(UPDATE_SERVER)/build/upload?name=$(PROJECT)&version=$$VERSION" || exit 1; \
-	done
-
-ci-publish:
-	@VERSION=$$(cat $(VERSION_FILE)); \
-	curl -fsS -X POST -H "X-Update-Secret: $(UPDATE_SECRET)" "$(UPDATE_SERVER)/build/publish?name=$(PROJECT)&platform=godot&version=$$VERSION"
-
-.PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac ci-version ci-export ci-binaries ci-upload ci-publish
+.PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac

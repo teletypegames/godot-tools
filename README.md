@@ -7,13 +7,11 @@ and [tic80-tools](../tic80-tools).
 - `example-makefile.make` — project Makefile: local dev targets
   (`build`, `run`, `web`, `export`, `watch`, `clean`), the desktop
   binary targets (`binaries`, `binary-win-x86`, `binary-win-x64`,
-  `binary-linux-x64`, `binary-mac-universal`) plus the Woodpecker
-  pipeline targets (`ci-version`, `ci-export`, `ci-binaries`,
-  `ci-upload`, `ci-publish`).
-- `example-woodpecker.yaml` — Woodpecker pipeline: version → build
-  (headless web export + desktop binaries in the `barichello/godot-ci`
-  image) → upload (HTTP POST to `/build/upload`) → update (calls the
-  teletypegames `/build/publish` endpoint with `platform=godot`).
+  `binary-linux-x64`, `binary-mac-universal`).
+- `example-woodpecker.yaml` — a one-line marker (`platform: godot`): the
+  full pipeline (version → build → upload → publish) is served by the update server's Woodpecker
+  configuration extension — preview it with
+  `curl "https://teletypegames.org/build/config?platform=godot"`.
 - `example-export_presets.cfg` — `export_presets.cfg` with the **Web**
   preset the Makefile exports plus the desktop presets (**Windows
   x86**, **Windows x64**, **Linux x64**, **Mac universal**). Web
@@ -40,14 +38,17 @@ and [tic80-tools](../tic80-tools).
 
    textures/vram_compression/import_etc2_astc=true
    ```
-3. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` and add the
-   `update_secret_key` secret in Woodpecker.
-   Match the `godot-builder` image tag to the Godot version the
-   project is made with (e.g. `4.6`) — the underlying
-   `barichello/godot-ci` image ships the matching export templates.
+3. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` (a one-line marker — the
+   pipeline itself is served by the update server; add `name:` when the
+   software name differs from the repo name) and add the
+   `application_token` secret in Woodpecker (an ApplicationToken with
+   the `update` + `upload` scopes, created in the admin).
+   The `godot-builder` image tag (and with it the export-template
+   version) is set server-side in the update server's `ci_platforms`
+   config, not per repo.
 4. Copy `example-tasks.json` to `.vscode/tasks.json`.
 
-The pipeline uploads `$(PROJECT)-$(VERSION).html.zip` and the desktop
+The served pipeline uploads `$(PROJECT)-$(VERSION).html.zip` and the desktop
 binary zips (`$(PROJECT)-$(VERSION)-<target>.zip`, targets: `win-x86`,
 `win-x64`, `linux-x64`, `mac-universal`) via `/build/upload`, then triggers
 `/build/publish?platform=godot&name=$(PROJECT)&version=$(VERSION)`, which
