@@ -1,0 +1,10 @@
+{
+  "files": {
+    "example-makefile.make": "Makefile",
+    "example-tasks.json": ".vscode/tasks.json",
+    "example-export_presets.cfg": "export_presets.cfg",
+    "hello/project.godot": "project.godot",
+    "hello/hello.tscn": "hello.tscn",
+    "hello/.gitignore": ".gitignore"
+  }
+}

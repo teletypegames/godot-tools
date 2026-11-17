@@ -20,6 +20,16 @@ and [tic80-tools](../tic80-tools).
 - `example-tasks.json` — VS Code `.vscode/tasks.json` with the common
   dev tasks: **Run** (`godot --path .`, default build task,
   `Cmd+Shift+B`), **Edit**, **Export Web** and **Make build**.
+- `hello/` — the smallest Godot project: one scene with a centred
+  "Hello World" label (`project.godot`, `hello.tscn`, `.gitignore`),
+  Compatibility renderer, ETC2 ASTC import on for the universal mac
+  export. The project name is only the window title, so it builds
+  under any project name.
+- `warp-template.json` — what *WarpEngine: New Game* (WarpEngine
+  Toolbox) copies for "Start from the template only": the Makefile,
+  the VS Code tasks, the export presets and the `hello/` files at the
+  project root. The toolbox sets `PROJECT` and writes
+  `.woodpecker.yaml` and `metadata.json` itself.
 
 ## Usage in a game repo
 
