@@ -1,35 +1,32 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    // Copy to .vscode/tasks.json.
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Run",
-            "type": "shell",
-            "command": "godot --path .",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Edit",
-            "type": "shell",
-            "command": "godot -e --path .",
-            "problemMatcher": []
-        },
-        {
-            "label": "Export Web",
-            "type": "shell",
-            "command": "make web",
-            "problemMatcher": []
-        },
-        {
-            "label": "Make build",
-            "type": "shell",
-            "command": "make build"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "detail": "Imports the project headless (checks it opens)",
+      "type": "warpengine",
+      "target": "build",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "web",
+      "detail": "Exports the web build into dist/web",
+      "type": "warpengine",
+      "target": "web"
+    },
+    {
+      "label": "run (Godot)",
+      "detail": "Runs the game in Godot on this computer: needs a local godot, does not run in the dev container",
+      "type": "warpengine",
+      "target": "run",
+      "host": true
+    },
+    {
+      "label": "edit (Godot)",
+      "detail": "Opens the project in the Godot editor on this computer",
+      "type": "shell",
+      "command": "godot -e --path .",
+      "problemMatcher": []
+    }
+  ]
 }

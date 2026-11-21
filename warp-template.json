@@ -6,5 +6,16 @@
     "hello/project.godot": "project.godot",
     "hello/hello.tscn": "hello.tscn",
     "hello/.gitignore": ".gitignore"
+  },
+  "devcontainer": {
+    "files": {
+      "example-devcontainer.json": ".devcontainer/devcontainer.json",
+      "example-devcontainer.Dockerfile": ".devcontainer/Dockerfile"
+    },
+    "fill": [
+      "example-devcontainer.json",
+      "example-devcontainer.Dockerfile"
+    ],
+    "tasks": "example-devcontainer-tasks.json"
   }
 }
