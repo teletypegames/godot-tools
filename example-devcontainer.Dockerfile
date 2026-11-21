@@ -31,3 +31,7 @@ RUN if [ -d /root/.local/share/godot/export_templates ]; then \
       ln -s /root/.local/share/godot/export_templates /home/dev/.local/share/godot/export_templates; \
       chown -R 1000:1000 /home/dev/.local; \
     fi
+
+# The Docker CLI: the WarpEngine Toolbox lists and starts the computer's WarpEngine containers through the
+# socket devcontainer.json mounts.
+COPY --from=docker:27-cli /usr/local/bin/docker /usr/local/bin/docker

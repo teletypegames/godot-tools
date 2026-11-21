@@ -41,7 +41,7 @@ so a computer with only Docker builds with the same toolchain as the pipeline.
 The tasks of `example-devcontainer-tasks.json` are merged into
 `.vscode/tasks.json`: `dev image` builds the container image, `play` builds the
 game and plays it in the host's web runtime. In the container `dev` reaches the export templates of the image (kept under `/root`) through a link, so `make web` exports `dist/web`, which the `play` task plays in the Play panel. The Godot editor and the game window do not open in the container: `run (Godot)` builds there and runs `make run` here, and `edit (Godot)` opens the local editor.
-The container editor gets its extensions from `example-devcontainer.json`: the WarpEngine Toolbox, Makefile Tools (its configure prompts off; the Toolbox tasks build) and the Godot tools; their language server is set to `host.docker.internal`, so the editor in the container talks to the Godot editor running on this computer (Docker Desktop and OrbStack forward it to its loopback port).
+The container editor gets its extensions from `example-devcontainer.json`: the WarpEngine Toolbox, Makefile Tools (its configure prompts off; the Toolbox tasks build) and the Godot tools; their language server is set to `host.docker.internal`, so the editor in the container talks to the Godot editor running on this computer (Docker Desktop and OrbStack forward it to its loopback port). It also mounts the computer's Docker socket, with the Docker CLI in the image and `dev` in the socket's group, so the Toolbox lists, starts and restarts the local engine's containers from inside the container.
 For an existing game repo, *WarpEngine: Add Dev Container* adds it and merges
 the tasks, keeping yours.
 
