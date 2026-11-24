@@ -19,6 +19,8 @@ build:
 run:
 	$(GODOT) --path .
 
+check: build
+
 web: build
 	@mkdir -p $(WEB_DIR)
 	@echo "==> Exporting web build ($(EXPORT_PRESET) preset)"
@@ -100,4 +102,4 @@ watch:
 clean:
 	rm -rf $(DIST_DIR) .godot
 
-.PHONY: all build run web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac
+.PHONY: all build run check web export watch clean binaries binary-win-x86 binary-win-x64 binary-linux-x64 binary-mac-universal binary-build binary-build-mac

@@ -4,12 +4,13 @@ CI/CD templates for [Godot](https://godotengine.org) (4.x) game
 projects, in the same spirit as [ebitengine-tools](../ebitengine-tools)
 and [tic80-tools](../tic80-tools).
 
-- `example-makefile.make` — project Makefile: local dev targets
-  (`build`, `run`, `web`, `export`, `watch`, `clean`), the desktop
+- `example-makefile.make` — project Makefile: the shared targets
+  (`build`, `run`, `check`, `web`, `clean`, see below) plus `export`,
+  `watch` and the desktop
   binary targets (`binaries`, `binary-win-x86`, `binary-win-x64`,
   `binary-linux-x64`, `binary-mac-universal`).
-- `example-woodpecker.yaml` — a one-line marker (`platform: godot`): the
-  full pipeline (version → build → upload → publish) is served by the update server's Woodpecker
+- `.woodpecker.yaml` (written by New Game, not kept here) — a one-line
+  marker (`platform: godot`): the full pipeline (version → build → upload → publish) is served by the update server's Woodpecker
   configuration extension — preview it with
   `curl "https://teletypegames.org/build/config?platform=godot"`.
 - `example-export_presets.cfg` — `export_presets.cfg` with the **Web**
@@ -45,6 +46,14 @@ The container editor gets its extensions from `example-devcontainer.json`: the W
 For an existing game repo, *WarpEngine: Add Dev Container* adds it and merges
 the tasks, keeping yours.
 
+## Makefile contract
+
+The Makefile has the targets every WarpEngine template shares: `build`, `run`, `check` (the CI's check step runs it in the builder image),
+`clean`, `web` (the Web preset's export in `dist/web`, which Play plays). `warp-engine check makefile` of the
+[WarpEngine CLI](https://wiki.teletypegames.org/godoc/warp-engine-cli/latest/cmd/warp-engine/)
+checks a project against it. `check` is the headless import, which
+fails on a broken project.
+
 ## Usage in a game repo
 
 1. Copy `example-makefile.make` to `Makefile` and set `PROJECT`
@@ -62,7 +71,7 @@ the tasks, keeping yours.
 
    textures/vram_compression/import_etc2_astc=true
    ```
-3. Copy `example-woodpecker.yaml` to `.woodpecker.yaml` (a one-line marker — the
+3. Create `.woodpecker.yaml` with the line `platform: godot` (a one-line marker — the
    pipeline itself is served by the update server; add `name:` when the
    software name differs from the repo name) and add the
    `application_token` secret in Woodpecker (an ApplicationToken with
