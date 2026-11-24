@@ -91,9 +91,9 @@ runs `apt-get` on every run. The tag tracks the Godot version:
 
 ```sh
 docker build --platform linux/amd64 -f builder.Dockerfile \
-  --build-arg GODOT_VERSION=4.6 \
-  -t git.teletypegames.org/build/godot-builder:4.6 .
-docker push git.teletypegames.org/build/godot-builder:4.6
+  --build-arg GODOT_VERSION=4.7.1 \
+  -t git.teletypegames.org/build/godot-builder:4.7.1 .
+docker push git.teletypegames.org/build/godot-builder:4.7.1
 ```
 
 Detailed documentation lives on the wiki: `/development/godot`.

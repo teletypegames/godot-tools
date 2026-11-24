@@ -6,11 +6,11 @@
 #
 # Build & push (the CI runner is linux/amd64):
 #   docker build --platform linux/amd64 -f builder.Dockerfile \
-#     --build-arg GODOT_VERSION=4.6 \
-#     -t git.teletypegames.org/build/godot-builder:4.6 .
-#   docker push git.teletypegames.org/build/godot-builder:4.6
+#     --build-arg GODOT_VERSION=4.7.1 \
+#     -t git.teletypegames.org/build/godot-builder:4.7.1 .
+#   docker push git.teletypegames.org/build/godot-builder:4.7.1
 
-ARG GODOT_VERSION=4.6
+ARG GODOT_VERSION=4.7.1
 FROM barichello/godot-ci:${GODOT_VERSION}
 
 RUN apt-get update \
